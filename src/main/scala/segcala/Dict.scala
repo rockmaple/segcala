@@ -24,10 +24,13 @@ object Dict {
 
   sealed trait DictType
 
-  //字符，记录其 Largest sum of degree of morphemic freedom of one-character words
   final case class CharDict() extends DictType
+
+  //字符，记录其 Largest sum of degree of morphemic freedom of one-character words
   final case class WordDict() extends DictType
 
+  //词语
+  final case class UnitDict() extends DictType
 
   private def loadDic(file: String, dictType: DictType) {
     for (line <- Source.fromFile(file).getLines()) {
