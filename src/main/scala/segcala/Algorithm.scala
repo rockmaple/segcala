@@ -24,8 +24,8 @@ object Algorithm {
   }
 
   private def createChunks(fragment: List[Char], offset: Int): List[Chunk] = {
-    var chunks: ListBuffer[Chunk] = new ListBuffer()
-    var words: Array[Word] = new Array(3)
+    val chunks = new ListBuffer[Chunk]()
+    val words = new Array[Word](3)
 
     findMatches(fragment, offset, chunks, words, 0)
     chunks.toList
@@ -68,26 +68,26 @@ object Algorithm {
     
   }
 
-  object Rules {
-    def largestAvgWordLenRule(chunks: List[Chunk]): List[Chunk] = {
-      val c = chunks.reduceLeft((c1, c2) => {if (c1.averageLength > c2.averageLength) c1 else c2})
-      chunks.filter(chunk => (chunk.averageLength == c.averageLength))
-    }
 
+  object Rules {
+    //长度最大规则
     def maxMatchRule(chunks: List[Chunk]): List[Chunk] = {
       val c = chunks.reduceLeft((c1, c2) => {if (c1.length > c2.length) c1 else c2})
       chunks.filter(chunk => (chunk.length == c.length))
     }
-
+    //平均词长最大规则
+    def largestAvgWordLenRule(chunks: List[Chunk]): List[Chunk] = {
+      val c = chunks.reduceLeft((c1, c2) => {if (c1.averageLength > c2.averageLength) c1 else c2})
+      chunks.filter(chunk => (chunk.averageLength == c.averageLength))
+    }
+    //词语长度变化最小的原则
     def smallestVarianceRule(chunks: List[Chunk]): List[Chunk] = {
       val c = chunks.reduceLeft((c1, c2) => {if (c1.variance < c2.variance) c1 else c2})
       chunks.filter(chunk => (chunk.variance == c.variance))
     }
-
     def largestSumMorphemicFreedomDegreeRule(chunks: List[Chunk]): List[Chunk] = {
       val c = chunks.reduceLeft((c1, c2) => {if (c1.degreeOfMorphemicFreedom > c2.degreeOfMorphemicFreedom) c1 else c2})
       chunks.filter(chunk => (chunk.degreeOfMorphemicFreedom == c.degreeOfMorphemicFreedom))
     }
-
   }
 }

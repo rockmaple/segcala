@@ -4,7 +4,6 @@ import org.junit._
 import Assert._
 import com.google.inject.{Injector, Guice}
 
-@Test
 class AppTest {
 
   @Test
