@@ -46,7 +46,7 @@ class Chunk(val words: List[Word], var lengthVal: Int, var averageLengthVal: Dou
       try {
         degreeOfMorphemicFreedomVal = words.filter(w => w.length == 1).map(w => Math.log(w.frequency.toDouble)).reduceLeft(_ + _)
       } catch {
-        case e => degreeOfMorphemicFreedomVal = 0
+        case e: Throwable => degreeOfMorphemicFreedomVal = 0
       }
     }
     degreeOfMorphemicFreedomVal

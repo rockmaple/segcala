@@ -1,33 +1,32 @@
 package segcala
 
-import com.google.inject.name.Named
-import com.google.inject.Inject
 import io.Source
 import com.google.common.io.Resources
-import segcala.Dict.{WordDict, CharDict}
 import collection.mutable
 import collection.mutable.ListBuffer
+import com.typesafe.config.ConfigFactory
 
-/**
- * 词典类
- */
-class Dict @Inject()(@Named("wordFiles") val wordFiles: String,
-                     @Named("charFiles") val charFiles: String,
-                     @Named("unitFiles") val unitFiles: String) {
-  Dict.loadDic(Resources.getResource(charFiles).getFile, CharDict())
-  Dict.loadDic(Resources.getResource(wordFiles).getFile, WordDict())
-}
 
 object Dict {
+
   //以首字符为key，value为树节点
   val dictionary = mutable.HashMap[Char, TreeNode]()
-
   sealed trait DictType
 
   //字符，记录其 Largest sum of degree of morphemic freedom of one-character words
   final case class CharDict() extends DictType
   final case class WordDict() extends DictType
 
+  /**
+   * 加载字典，使用前需显示调用一次
+   */
+  def load(){
+    val config = ConfigFactory.load()
+    val wordFile = config.getString("dict.wordFile")
+    val charFile = config.getString("dict.charFile")
+    Dict.loadDic(Resources.getResource(charFile).getFile, CharDict())
+    Dict.loadDic(Resources.getResource(wordFile).getFile, WordDict())
+  }
 
   private def loadDic(file: String, dictType: DictType) {
     for (line <- Source.fromFile(file).getLines()) {
@@ -53,12 +52,10 @@ object Dict {
    */
   def addWord(word: String, freq: Int = 0) {
     val l = word.toList
-    var opNode = search(l)
-    //没找到则创建新节点
-    if (opNode == None) {
+    val opNode = search(l) orElse {
       val tn = if (l.length == 1) new TreeNode(l.head, 0, true, freq) else new TreeNode(l.head, 0, false, freq)
       dictionary(l.head) = tn
-      opNode = Some(tn)
+      Some(tn)
     }
 
     var node = opNode.get
@@ -131,7 +128,6 @@ object Dict {
   }
 
 }
-
 
 /**
  * 字典树节点

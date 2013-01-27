@@ -1,6 +1,6 @@
 package segcala
 
-import collection.mutable.{ListBuffer, Queue}
+import collection.mutable.ListBuffer
 
 /**
  * Created by IntelliJ IDEA.
