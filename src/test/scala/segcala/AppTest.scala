@@ -3,6 +3,7 @@ package segcala
 import org.testng.Assert
 import Assert._
 import org.testng.annotations.{Test, BeforeClass}
+import segcala.mmseg.{TextFragment, MMSeg, Dict}
 
 class AppTest {
 

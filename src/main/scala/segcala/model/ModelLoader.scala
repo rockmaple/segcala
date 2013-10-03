@@ -65,54 +65,6 @@ class ModelLoader {
 
       this.inferencer = new LinearViterbi(this.templates, inferencer.ysize, inferencer.weights)*/
 
-      /*val templets = in.readObject().asInstanceOf[edu.fudan.nlp.pipe.seq.templet.TempletGroup]
-
-      val templateList = ListBuffer[Template]()
-
-      templets.asScala.foreach(t => {
-        if (t.isInstanceOf[BaseTemplet]) {
-          val t1 = t.asInstanceOf[BaseTemplet]
-          val tpl = new BasicTemplate(t1.getId, t1.getTemplet, t1.getOrder, t1.getDims, t1.getVars, t1.getMinLen)
-          templateList.append(tpl)
-        } else if (t.isInstanceOf[CharClassTemplet]) {
-          val t1 = t.asInstanceOf[CharClassTemplet]
-          val charClassDicts = new Array[CharClassDict](t1.dicts.size)
-          for (i <- 0 until t1.dicts.size) {
-            val ccd = new CharClassDict(t1.dicts(i).getName, t1.dicts(i).getDict)
-            charClassDicts(i) = ccd
-          }
-          val tpl = new CharClassTemplate(t1.getId, charClassDicts)
-          templateList.append(tpl)
-        } else if (t.isInstanceOf[CustomTemplet]) {
-          val t1 = t.asInstanceOf[CustomTemplet]
-          templateList.append(new CustomTemplate(t1.getId))
-        }
-      })
-
-      templates = new TemplateGroup(templateList.toList, templets.gid, templets.base, templets.maxOrder, templets.numStates, templets.offset)
-
-      val l = in.readObject().asInstanceOf[edu.fudan.ml.classifier.linear.Linear]
-
-      val infer = l.getInferencer.asInstanceOf[edu.fudan.ml.classifier.struct.inf.LinearViterbi]
-
-      this.inferencer = new LinearViterbi(this.templates, infer.getYsize, infer.getWeights)
-
-      val fa = l.getFactory.getMaps.get(edu.fudan.ml.types.alphabet.AlphabetFactory.DefalutFeatureName).asInstanceOf[edu.fudan.ml.types.alphabet.StringFeatureAlphabet]
-
-      val origionData = fa.getData
-
-      val toData = new TObjectIntCustomHashMap[String](new StringFeatureHashStrategy, 10, 0.5f, -1)
-
-      toData.putAll(origionData)
-
-
-      this.fetureAlphabet = new StringFeatureAlphabet(toData, fa.isFrozen, fa.getLast)
-
-      val la = l.getFactory.getMaps.get(edu.fudan.ml.types.alphabet.AlphabetFactory.DefalutLabelName).asInstanceOf[edu.fudan.ml.types.alphabet.LabelAlphabet]
-
-      this.labelAlphabet = new LabelAlphabet(la.getData, la.getIndex, la.isFrozen)*/
-
-
     }
     catch {
       case  e: Exception =>{

@@ -7,16 +7,17 @@ import segcala.classifier.{ConstraintViterbi, Inferencer}
 import segcala.model.ModelLoader
 import scala.collection.mutable.ListBuffer
 import segcala.data.{TextFragWithSeqWithDataWithDic, TextFragWithSeqWithData, TextFrag}
-import segcala.util.LabelParser
+import segcala.util.{Sentenizer, LabelParser}
 import segcala.dictionary.Dictionary
 
 object Segcala {
 
-  val dicFile = "models/seg.model"
+  val modelFile = "models/seg.model"
+  val useDic = true
 
   val inst = {
     val segcala = new Segcala
-    segcala.init(dicFile)
+    segcala.init(modelFile)
     segcala
   }
 
@@ -57,13 +58,31 @@ class Segcala {
   }
 
   def doSegment(s: String): String = {
-    val textFrag = new TextFrag(s)
-    val processed = dataProcessor.process(textFrag).get.asInstanceOf[TextFragWithSeqWithDataWithDic]
-    val res = inferencer.getBest(processed)
-    val pred = LabelParser.parse(res, labelAlphabet)
-    val sArr = pred.getLabel(0).asInstanceOf[Array[String]]
-    val s1 = segToString(processed.source, sArr, " ")
-    s1
+    val sentences = Sentenizer.split(s)
+    val result = new StringBuilder()
+    for (i <- 0 until sentences.length) {
+      val sen = sentences(i)
+      val textFrag = new TextFrag(sen)
+      val textData = dataProcessor.process(textFrag)
+      val res = inferencer.getBest(textData.get)
+      val pred = LabelParser.parse(res, labelAlphabet)
+      val sArr = pred.getLabel(0).asInstanceOf[Array[String]]
+      textData.get match {
+        case TextFragWithSeqWithDataWithDic(origion, source, data, dicData) => {
+          result.append(segToString(source, sArr, " "))
+          if (i < sentences.length - 1) {
+            result.append(" ")
+          }
+        }
+        case TextFragWithSeqWithData(origion, source, data) => {
+          result.append(segToString(source, sArr, " "))
+          if (i < sentences.length - 1) {
+            result.append(" ")
+          }
+        }
+      }
+    }
+    result.toString()
   }
 
   def segToString(data: Array[Array[String]], labels: Array[String], delim: String): String = {
