@@ -1,4 +1,4 @@
-package segcala
+package segcala.mmseg
 
 import io.Source
 import com.google.common.io.Resources

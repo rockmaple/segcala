@@ -1,4 +1,4 @@
-package segcala
+package segcala.mmseg
 
 /**
  * 词

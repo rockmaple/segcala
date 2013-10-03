@@ -1,5 +1,4 @@
-package segcala
-
+package segcala.mmseg
 
 /**
  * Created by IntelliJ IDEA.
