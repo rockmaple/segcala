@@ -30,7 +30,7 @@ class BasicTemplate(val id: Int,
     sb.append(":")
     for (i <- 0 until dim.length) {
       val j = dim(i)(0)
-      val k = dim(i)(1)
+      val k = dim(i)(1)      //
       if (k >= data.length) {
         return -1
       }
@@ -56,7 +56,7 @@ class BasicTemplate(val id: Int,
       }
       sb.append("/")
     }
-    //logger.debug("key: " + sb.toString())
+    logger.debug("key: " + sb.toString())
     features.lookupIndex(sb.toString(), math.pow(numLabels(0), order + 1).toInt)
   }
 

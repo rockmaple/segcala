@@ -44,8 +44,8 @@ class LinearViterbi(val templates: TemplateGroup, val ysize: Int, val weights: A
   }
 
   def doForwardViterbi(lattice: Array[Array[Node]]) {
-    //logger.debug(lattice.deep.mkString("\n"))
-    //logger.debug("------------")
+    logger.debug(lattice.deep.mkString("\n"))
+    logger.debug("------------")
     for (i <- 1 until lattice.length) {
       for (j <- 0 until lattice(i).length) {
         if (lattice(i)(j) != null) {
